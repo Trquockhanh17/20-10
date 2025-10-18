@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quà tặng 20/10 cho em yêu</title>
+    <title>Lời chúc 20/10</title>
     <style>
       * {
         box-sizing: border-box;
@@ -18,18 +18,17 @@
 
       body {
         margin: 0;
-        padding: 40px 24px;
+        padding: clamp(32px, 10vh, 80px) 24px clamp(24px, 8vh, 64px);
         background: linear-gradient(to right, #ffecd2, #fcb69f);
         font-family: "Segoe UI", sans-serif;
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
         min-height: 100vh;
-        height: 100vh;
-        overflow: hidden;
+        height: auto;
         overflow-x: hidden;
         flex-direction: column;
-        gap: 24px;
+        gap: clamp(24px, 4vw, 48px);
       }
 
       .gift-container {
@@ -38,9 +37,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: var(--gift-gap);
+        gap: clamp(var(--gift-gap), 4vw, 56px);
         text-align: center;
         touch-action: manipulation;
+        width: min(960px, 100%);
       }
 
       .gift-box {
@@ -86,44 +86,163 @@
         top: calc(-1 * clamp(24px, calc(var(--gift-size) * 0.22), 36px));
         left: calc((var(--gift-size) - (var(--gift-size) + 10px)) / 2);
         border-radius: calc(var(--gift-radius) * 0.75);
-        transform-origin: left center;
+        transform-origin: right center;
         transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         box-shadow: 0 12px 25px rgba(255, 77, 109, 0.4);
       }
 
       .open .lid {
-        transform: rotate(-18deg) translate(10px, calc(var(--gift-size) * -0.75));
+        transform: rotate(32deg)
+          translate(calc(var(--gift-size) * 0.6), calc(var(--gift-size) * -0.9));
       }
 
-      .message {
-        margin-top: 0;
-        font-size: clamp(1.1rem, 2.8vw, 1.6rem);
-        text-align: center;
-        color: #fff;
-        max-width: min(440px, 90vw);
-        line-height: 1.55;
-        opacity: 0;
-        transform: translateY(16px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
+      .message-area {
+        position: relative;
+        width: min(1100px, 100%);
+        min-height: clamp(180px, 30vh, 280px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         pointer-events: none;
-        padding: 0 12px;
+        padding: 0 clamp(14px, 5vw, 72px);
+        padding-bottom: clamp(120px, calc(var(--gift-size) * 1.3), 196px);
       }
 
-      .gift-container.open .message {
-        opacity: 1;
-        transform: translateY(0);
+      .message-area::after {
+        content: "Bám vào hộp quà điii...!!";
+        font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+        color: rgba(255, 255, 255, 0.85);
+        text-align: center;
+        letter-spacing: 0.4px;
+        line-height: 1.4;
+        opacity: 0.8;
+        transition: opacity 0.4s ease;
+      }
+
+      .message-area.has-content::after {
+        opacity: 0;
+      }
+
+      .message-item {
+        position: absolute;
+        bottom: clamp(64px, calc(var(--gift-size) * 1.4), 220px);
+        left: 50%;
+        transform: translate(-50%, -12px);
+        opacity: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.14);
+        border-radius: 18px;
+        padding: clamp(28px, 5vw, 52px) clamp(32px, 6vw, 68px);
+        color: #fff;
+        font-size: clamp(1.35rem, 3.4vw, 2.25rem);
+        line-height: 1.7;
+        box-shadow: 0 18px 45px rgba(255, 77, 109, 0.25);
+        backdrop-filter: blur(12px);
         pointer-events: auto;
+      }
+
+      .message-item.message-enter {
+        animation: messageIn 0.6s forwards cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+
+      .message-item.message-exit {
+        animation: messageOut 0.35s forwards cubic-bezier(0.6, 0.04, 0.98, 0.34);
+        pointer-events: none;
+      }
+
+      .message-item.message-final {
+        position: relative;
+        bottom: auto;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: min(1040px, 96vw);
+        background: none;
+        padding: clamp(10px, 3vw, 28px);
+        box-shadow: none;
+        margin-top: clamp(-18px, -4vh, 12px);
+      }
+
+      .message-text {
+        text-align: center;
+      }
+
+      .message-image {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        text-align: center;
+      }
+
+      .message-image img {
+        width: clamp(200px, 46vw, 360px);
+        height: auto;
+        border-radius: 20px;
+        box-shadow: 0 22px 45px rgba(0, 0, 0, 0.28);
+      }
+
+      .message-image p {
+        margin: 0;
+        font-size: clamp(1rem, 2.2vw, 1.4rem);
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .message-item.message-final .message-image {
+        gap: clamp(20px, 6vh, 36px);
+      }
+
+      .message-item.message-final .message-image img {
+        width: min(780px, 88vw);
+        max-height: 76vh;
+        border-radius: 28px;
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.35);
+      }
+
+      .gift-container.open .message-area::after {
+        opacity: 0;
       }
 
       .gift-container.open .gift-box {
         transform: translateY(-12px) scale(1.05);
       }
 
+      .gift-container.gift-hidden {
+        justify-content: center;
+        gap: clamp(24px, 6vh, 64px);
+      }
+
+      .gift-container.gift-hidden .gift-box {
+        display: none;
+      }
+
+      .gift-container.gift-hidden .message-area {
+        align-items: flex-start;
+        min-height: clamp(260px, 74vh, 86vh);
+        padding: clamp(0px, 2vh, 16px) clamp(16px, 6vw, 68px)
+          clamp(36px, 8vh, 80px);
+        justify-content: center;
+      }
+
+      .gift-container.gift-hidden .message-area::after {
+        opacity: 0;
+      }
+
+      .gift-container.gift-hidden .message-item {
+        position: relative;
+        bottom: auto;
+        transform: translate(-50%, 0);
+      }
+
+      .gift-container.gift-hidden .message-item.message-final {
+        background: none;
+      }
+
       .heart {
         --x-offset: 0px;
+        --heart-size: 24px;
         position: absolute;
-        width: 20px;
-        height: 20px;
+        width: var(--heart-size);
+        height: var(--heart-size);
         background: linear-gradient(135deg, #ff5f6d, #ffc371);
         transform: rotate(45deg);
         animation: floatUp var(--duration, 7s) ease-in-out infinite;
@@ -137,20 +256,49 @@
       .heart::after {
         content: "";
         position: absolute;
-        width: 20px;
-        height: 20px;
+        width: 100%;
+        height: 100%;
         background: inherit;
         border-radius: 50%;
       }
 
       .heart::before {
-        top: -10px;
+        top: -50%;
         left: 0;
       }
 
       .heart::after {
-        left: -10px;
+        left: -50%;
         top: 0;
+      }
+
+      .firework {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+        z-index: 4;
+      }
+
+      .firework-particle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: clamp(10px, 2.4vw, 18px);
+        height: clamp(10px, 2.4vw, 18px);
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          hsla(var(--hue, 340), 100%, 68%, 1) 0%,
+          hsla(var(--hue, 340), 100%, 68%, 0.05) 75%
+        );
+        opacity: 0;
+        transform: translate3d(0, 0, 0);
+        animation: fireworkParticle 1.2s ease-out forwards;
+        animation-delay: var(--delay, 0s);
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.55));
       }
 
       .photo-cloud {
@@ -277,6 +425,35 @@
         animation-delay: 2.4s;
       }
 
+      @media (min-width: 1200px) {
+        .message-area {
+          width: min(880px, 70vw);
+          min-height: clamp(150px, 26vh, 240px);
+          padding: 0 clamp(24px, 5vw, 60px)
+            clamp(96px, calc(var(--gift-size) * 1.15), 160px);
+        }
+
+        .message-item {
+          bottom: clamp(60px, calc(var(--gift-size) * 1.2), 200px);
+          font-size: clamp(1.15rem, 2.4vw, 1.8rem);
+          padding: clamp(22px, 4vw, 42px) clamp(28px, 5vw, 56px);
+        }
+
+        .message-image img {
+          width: clamp(220px, 28vw, 320px);
+        }
+
+        .message-item.message-final {
+          width: min(880px, 68vw);
+          padding: clamp(16px, 4vw, 32px);
+        }
+
+        .message-item.message-final .message-image img {
+          width: min(520px, 48vw);
+          max-height: 62vh;
+        }
+      }
+
       @media (max-width: 900px) {
         :root {
           --gift-size: 130px;
@@ -286,11 +463,29 @@
         }
 
         body {
-          padding: 32px 18px;
+          padding: clamp(40px, 16vh, 96px) 18px clamp(24px, 10vh, 56px);
         }
 
-        .message {
-          font-size: clamp(1.05rem, 3vw, 1.4rem);
+        .gift-container {
+          width: min(720px, 100%);
+        }
+
+        .message-area {
+          width: min(860px, 96vw);
+          min-height: clamp(170px, 32vh, 260px);
+          padding: 0 clamp(12px, 5vw, 48px)
+            clamp(108px, calc(var(--gift-size) * 1.3), 180px);
+        }
+
+        .message-item {
+          bottom: clamp(52px, calc(var(--gift-size) * 1.28), 204px);
+          font-size: clamp(1.22rem, 3.8vw, 2rem);
+          padding: clamp(24px, 5.4vw, 46px) clamp(26px, 6.4vw, 56px);
+        }
+
+        .message-item.message-final {
+          width: min(820px, 94vw);
+          padding: clamp(28px, 6vw, 54px);
         }
       }
 
@@ -303,7 +498,7 @@
         }
 
         body {
-          padding: 28px 14px 80px;
+          padding: clamp(48px, 18vh, 96px) 16px clamp(28px, 12vh, 72px);
           height: auto;
           overflow-y: auto;
         }
@@ -336,9 +531,22 @@
           filter: blur(0);
         }
 
-        .message {
-          max-width: 95vw;
-          font-size: clamp(1rem, 4.5vw, 1.3rem);
+        .message-area {
+          width: min(560px, 96vw);
+          min-height: clamp(150px, 36vh, 230px);
+          padding: 0 clamp(10px, 6vw, 24px)
+            clamp(92px, calc(var(--gift-size) * 1.25), 150px);
+        }
+
+        .message-item {
+          bottom: clamp(48px, calc(var(--gift-size) * 1.2), 176px);
+          font-size: clamp(1.2rem, 5vw, 1.7rem);
+          padding: clamp(22px, 6vw, 34px) clamp(24px, 7vw, 38px);
+        }
+
+        .message-item.message-final {
+          width: min(620px, 96vw);
+          padding: clamp(18px, 5.8vw, 32px);
         }
       }
 
@@ -351,17 +559,71 @@
         }
 
         body {
-          padding: 32px 12px 96px;
+          padding: clamp(42px, 20vh, 90px) 12px clamp(32px, 14vh, 80px);
         }
 
-        .message {
-          font-size: clamp(0.95rem, 5.2vw, 1.15rem);
+        .message-area {
+          width: min(440px, 96vw);
+          padding: 0 clamp(6px, 8vw, 20px)
+            clamp(84px, calc(var(--gift-size) * 1.35), 140px);
+          min-height: clamp(140px, 40vh, 220px);
+        }
+
+        .message-item {
+          bottom: clamp(44px, calc(var(--gift-size) * 1.18), 150px);
+          font-size: clamp(1.15rem, 5.8vw, 1.6rem);
+          padding: clamp(20px, 7vw, 30px);
+        }
+
+        .message-item.message-final {
+          width: min(500px, 96vw);
+          padding: clamp(16px, 6.8vw, 28px);
         }
 
         .photo:nth-of-type(n + 10) {
           display: none;
         }
       }
+      @keyframes messageIn {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, 90px) scale(0.9);
+        }
+        60% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 1;
+          transform: translate(-50%, 0) scale(1);
+        }
+      }
+
+      @keyframes messageOut {
+        0% {
+          opacity: 1;
+          transform: translate(-50%, 0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -60px) scale(0.92);
+        }
+      }
+
+      @keyframes fireworkParticle {
+        0% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0) scale(0.45);
+        }
+        20% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translate3d(var(--dx, 0px), var(--dy, -90px), 0)
+            scale(0.12);
+        }
+      }
+
       @keyframes floatUp {
         0% {
           transform: translate3d(0, 0, 0) scale(0.8) rotate(45deg);
@@ -408,50 +670,179 @@
     </style>
   </head>
   <body>
-    <!-- Hộp quà -->
+    <!-- H?p quà -->
     <div class="gift-container" onclick="openGift()" id="giftContainer">
+      <div class="message-area" id="messageArea"></div>
       <div class="gift-box" id="giftBox">
         <div class="lid"></div>
       </div>
-      <div class="message" id="message">
-        Chúc mừng ngày Phụ nữ Việt Nam 20/10, nàng thơ xinh đẹp của anh!<br />
-        Mong em luôn rạng rỡ, mạnh mẽ và được yêu thương thật nhiều mỗi ngày.
-      </div>
     </div>
 
-    <!-- Ảnh xung quanh -->
-    <div class="photo-cloud">
-      <div class="photo photo1"><img src="img2.jpg" alt="ảnh em yêu" /></div>
-      <div class="photo photo2"><img src="img3.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo3"><img src="img2.jpg" alt="ảnh em yêu" /></div>
-      <div class="photo photo4"><img src="img3.jpg" alt="ảnh đôi mình" /></div>
+    <!-- ?nh xung quanh -->
+    <!-- <div class="photo-cloud">
+      <div class="photo photo1"><img src="img2.jpg" alt="?nh em yêu" /></div>
+      <div class="photo photo2"><img src="img3.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo3"><img src="img2.jpg" alt="?nh em yêu" /></div>
+      <div class="photo photo4"><img src="img3.jpg" alt="?nh dôi mình" /></div>
       <div class="photo photo5">
         <img
           src="z6738997170139_353108224ffbfc5b901a43e05049f112.jpg"
-          alt="ảnh kỷ niệm"
+          alt="?nh k? ni?m"
         />
       </div>
-      <div class="photo photo6"><img src="img4.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo7"><img src="img17.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo8"><img src="img6.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo9"><img src="img19.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo10"><img src="img8.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo11"><img src="img9.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo12"><img src="img10.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo13"><img src="img11.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo14"><img src="img12.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo15"><img src="img13.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo16"><img src="img14.jpg" alt="ảnh đôi mình" /></div>
-      <div class="photo photo17"><img src="img16.jpg" alt="ảnh đôi mình" /></div>
-    </div>
+      <div class="photo photo6"><img src="img4.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo7"><img src="img17.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo8"><img src="img6.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo9"><img src="img19.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo10"><img src="img8.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo11"><img src="img9.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo12"><img src="img10.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo13"><img src="img11.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo14"><img src="img12.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo15"><img src="img13.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo16"><img src="img14.jpg" alt="?nh dôi mình" /></div>
+      <div class="photo photo17"><img src="img16.jpg" alt="?nh dôi mình" /></div>
+    </div> -->
     <script>
+      const messageSteps = [
+        {
+          type: "text",
+          content:
+            "Nhân dịp 20/10, bộ phận IT xin gửi đến toàn thể các chị em phụ nữ Tutimi những lời chúc tốt đẹp nhất cùng món quà nhỏ đầy yêu thương.",
+        },
+        {
+          type: "text",
+          content:
+            "Cảm ơn các bạn đã luôn dịu dàng, xinh đẹp và lan tỏa nguồn năng lượng tích cực cho cả tập thể.",
+        },
+        {
+          type: "text",
+          content:
+            "Chúc cho mọi ước mơ của các bạn đều trở thành hiện thực, luôn rạng rỡ nụ cười và thật hạnh phúc mỗi ngày!",
+        },
+        {
+          type: "text",
+          content:
+            "Hãy cùng nhau giữ gìn những khoảnh khắc đẹp và biến Tutimi trở thành ngôi nhà chung tràn đầy niềm vui và yêu thương.",
+        },
+        {
+          type: "image",
+          src: "imgKhiem.png",
+          alt: "Ảnh Khiêm gửi tặng",
+          final: true,
+        },
+      ];
+
+      const giftContainer = document.getElementById("giftContainer");
+      const giftBox = document.getElementById("giftBox");
+      const messageArea = document.getElementById("messageArea");
+
+      let messageIndex = -1;
+      let heartsTimer = null;
+      let fireworksTimer = null;
+      let fireworkAnchor = null;
+      let photosRevealed = false;
+      let isAnimatingMessage = false;
+
       function openGift() {
-        const giftContainer = document.getElementById("giftContainer");
-        if (giftContainer.classList.contains("open")) {
+        if (isAnimatingMessage) {
           return;
         }
 
         giftContainer.classList.add("open");
+        revealPhotos();
+
+        const currentMessage = messageArea.querySelector(
+          ".message-item:not(.message-exit)"
+        );
+        if (currentMessage) {
+          isAnimatingMessage = true;
+          currentMessage.classList.remove("message-enter");
+          currentMessage.classList.add("message-exit");
+          currentMessage.addEventListener(
+            "animationend",
+            () => {
+              currentMessage.remove();
+              isAnimatingMessage = false;
+              showNextMessage();
+            },
+            { once: true }
+          );
+        } else {
+          showNextMessage();
+        }
+      }
+
+      function showNextMessage() {
+        if (isAnimatingMessage) {
+          return;
+        }
+
+        isAnimatingMessage = true;
+        const lastIndex = messageSteps.length - 1;
+        messageIndex = Math.min(messageIndex + 1, lastIndex);
+        const step = messageSteps[messageIndex];
+        const item = document.createElement("div");
+        item.className = "message-item message-enter";
+
+        if (!step.final) {
+          giftContainer.classList.remove("gift-hidden");
+        }
+
+        if (step.type === "text") {
+          item.classList.add("message-text");
+          item.textContent = step.content;
+        } else {
+          item.classList.add("message-image");
+          const img = document.createElement("img");
+          img.src = step.src;
+          img.alt = step.alt || "";
+          item.appendChild(img);
+
+          if (step.caption) {
+            const caption = document.createElement("p");
+            caption.textContent = step.caption;
+            item.appendChild(caption);
+          }
+        }
+
+        if (step.final) {
+          item.classList.add("message-final");
+        }
+
+        messageArea.appendChild(item);
+        messageArea.classList.add("has-content");
+
+        item.addEventListener(
+          "animationend",
+          (event) => {
+            if (event.animationName === "messageIn") {
+              isAnimatingMessage = false;
+            }
+          },
+          { once: true }
+        );
+
+        if (step.final) {
+          giftContainer.classList.add("gift-hidden");
+          updateFireworkAnchor();
+          startHearts();
+          startFireworks();
+          setTimeout(updateFireworkAnchor, 320);
+        } else if (step.type === "image") {
+          startHearts();
+          stopFireworks();
+        } else {
+          stopHearts();
+          stopFireworks();
+        }
+      }
+
+      function revealPhotos() {
+        if (photosRevealed) {
+          return;
+        }
+        photosRevealed = true;
 
         const photos = document.querySelectorAll(".photo");
         photos.forEach((photo, index) => {
@@ -459,12 +850,82 @@
             photo.classList.add("visible");
           }, index * 120);
         });
+      }
 
-        if (!window.heartsStarted) {
-          window.heartsStarted = true;
-          createHeart();
-          window.heartsTimer = setInterval(createHeart, 260);
+      function startHearts() {
+        if (heartsTimer) {
+          return;
         }
+
+        createHeart();
+        heartsTimer = setInterval(createHeart, 260);
+      }
+
+      function stopHearts() {
+        if (!heartsTimer) {
+          return;
+        }
+
+        clearInterval(heartsTimer);
+        heartsTimer = null;
+      }
+
+      function startFireworks() {
+        if (fireworksTimer) {
+          return;
+        }
+
+        updateFireworkAnchor();
+        launchFireworks();
+        fireworksTimer = setInterval(() => {
+          updateFireworkAnchor();
+          launchFireworks();
+        }, 420);
+      }
+
+      function stopFireworks() {
+        if (!fireworksTimer) {
+          return;
+        }
+
+        clearInterval(fireworksTimer);
+        fireworksTimer = null;
+        fireworkAnchor = null;
+      }
+
+      function updateFireworkAnchor() {
+        fireworkAnchor = getFireworkAnchor();
+      }
+
+      function getFireworkAnchor() {
+        if (!giftContainer.classList.contains("gift-hidden")) {
+          const rect = giftBox.getBoundingClientRect();
+          if (rect.width && rect.height) {
+            return {
+              x: rect.left + rect.width / 2,
+              y: rect.top + rect.height * 0.2,
+              spreadX: rect.width * 1.4,
+              spreadY: rect.height * 2.2,
+            };
+          }
+        }
+
+        const areaRect = messageArea.getBoundingClientRect();
+        if (areaRect.width && areaRect.height) {
+          return {
+            x: areaRect.left + areaRect.width / 2,
+            y: areaRect.top + areaRect.height * 0.35,
+            spreadX: areaRect.width * 0.8,
+            spreadY: areaRect.height * 1.2,
+          };
+        }
+
+        return {
+          x: window.innerWidth / 2,
+          y: window.innerHeight * 0.4,
+          spreadX: window.innerWidth * 0.5,
+          spreadY: window.innerHeight * 0.6,
+        };
       }
 
       function createHeart() {
@@ -474,14 +935,61 @@
         const size = 14 + Math.random() * 18;
         heart.style.width = size + "px";
         heart.style.height = size + "px";
+        heart.style.setProperty("--heart-size", size + "px");
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.setProperty("--duration", duration + "s");
-        heart.style.setProperty("--x-offset", (Math.random() * 2 - 1) * 22 + "vw");
+        heart.style.setProperty(
+          "--x-offset",
+          (Math.random() * 2 - 1) * 22 + "vw"
+        );
         heart.style.animationDelay = Math.random() * -4 + "s";
         document.body.appendChild(heart);
         setTimeout(() => heart.remove(), duration * 1000 + 2000);
       }
+
+      function launchFireworks() {
+        const anchor = fireworkAnchor || getFireworkAnchor();
+        const bursts = 5;
+        const spreadX = anchor.spreadX || 280;
+        const spreadY = anchor.spreadY || 260;
+
+        for (let i = 0; i < bursts; i += 1) {
+          setTimeout(() => {
+            const offsetX = (Math.random() - 0.5) * spreadX;
+            const offsetY = Math.random() * -spreadY - 60;
+            spawnFirework(anchor.x + offsetX, anchor.y + offsetY);
+          }, i * 140);
+        }
+      }
+
+      function spawnFirework(x, y) {
+        const firework = document.createElement("div");
+        firework.className = "firework";
+        firework.style.left = x + "px";
+        firework.style.top = y + "px";
+
+        const particles = 18 + Math.floor(Math.random() * 6);
+        for (let i = 0; i < particles; i += 1) {
+          const particle = document.createElement("span");
+          particle.className = "firework-particle";
+          const angle = (Math.PI * 2 * i) / particles;
+          const distance = 110 + Math.random() * 90;
+          particle.style.setProperty("--dx", Math.cos(angle) * distance + "px");
+          particle.style.setProperty("--dy", Math.sin(angle) * distance + "px");
+          particle.style.setProperty(
+            "--hue",
+            (320 + Math.random() * 50).toFixed(0)
+          );
+          particle.style.setProperty(
+            "--delay",
+            (Math.random() * 0.2).toFixed(2) + "s"
+          );
+          firework.appendChild(particle);
+        }
+
+        document.body.appendChild(firework);
+        setTimeout(() => firework.remove(), 1500);
+      }
     </script>
   </body>
 </html>
-
