@@ -1,45 +1,66 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <title>Quà tặng sinh nhật cho em 💝</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quà tặng 20/10 cho em yêu</title>
     <style>
       * {
         box-sizing: border-box;
       }
+
+      :root {
+        --gift-size: 150px;
+        --gift-gap: 24px;
+        --gift-radius: 16px;
+        --photo-size: 130px;
+      }
+
       body {
         margin: 0;
-        padding: 0;
+        padding: 40px 24px;
         background: linear-gradient(to right, #ffecd2, #fcb69f);
         font-family: "Segoe UI", sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
+        min-height: 100vh;
         height: 100vh;
         overflow: hidden;
+        overflow-x: hidden;
         flex-direction: column;
+        gap: 24px;
       }
 
       .gift-container {
         position: relative;
         z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--gift-gap);
+        text-align: center;
+        touch-action: manipulation;
       }
 
       .gift-box {
-        width: 150px;
-        height: 150px;
+        width: var(--gift-size);
+        height: var(--gift-size);
         background: #ff4d6d;
         position: relative;
-        border-radius: 10px;
+        border-radius: var(--gift-radius);
         cursor: pointer;
-        animation: bounce 2s infinite;
+        animation: giftPulse 3.5s ease-in-out infinite;
+        box-shadow: 0 24px 50px rgba(255, 77, 109, 0.35);
+        transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        will-change: transform;
       }
 
       .gift-box::before {
         content: "";
         position: absolute;
         width: 100%;
-        height: 20px;
+        height: clamp(16px, calc(var(--gift-size) * 0.14), 26px);
         background: #fff;
         top: 50%;
         left: 0;
@@ -49,7 +70,7 @@
       .gift-box::after {
         content: "";
         position: absolute;
-        width: 20px;
+        width: clamp(16px, calc(var(--gift-size) * 0.14), 22px);
         height: 100%;
         background: #fff;
         left: 50%;
@@ -58,41 +79,58 @@
       }
 
       .lid {
-        width: 160px;
-        height: 30px;
+        width: calc(var(--gift-size) + 10px);
+        height: clamp(24px, calc(var(--gift-size) * 0.22), 36px);
         background: #ff4d6d;
         position: absolute;
-        top: -30px;
-        left: -5px;
-        border-radius: 5px;
-        transition: transform 0.5s ease;
+        top: calc(-1 * clamp(24px, calc(var(--gift-size) * 0.22), 36px));
+        left: calc((var(--gift-size) - (var(--gift-size) + 10px)) / 2);
+        border-radius: calc(var(--gift-radius) * 0.75);
+        transform-origin: left center;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 12px 25px rgba(255, 77, 109, 0.4);
       }
 
       .open .lid {
-        transform: rotate(-30deg) translateY(-80px);
+        transform: rotate(-18deg) translate(10px, calc(var(--gift-size) * -0.75));
       }
 
       .message {
-        display: none;
-        margin-top: 40px;
-        font-size: 1.5em;
+        margin-top: 0;
+        font-size: clamp(1.1rem, 2.8vw, 1.6rem);
         text-align: center;
         color: #fff;
-        animation: fadeIn 2s ease-in-out;
+        max-width: min(440px, 90vw);
+        line-height: 1.55;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+        pointer-events: none;
+        padding: 0 12px;
       }
 
-      .open + .message {
-        display: block;
+      .gift-container.open .message {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .gift-container.open .gift-box {
+        transform: translateY(-12px) scale(1.05);
       }
 
       .heart {
+        --x-offset: 0px;
         position: absolute;
         width: 20px;
         height: 20px;
-        background: red;
+        background: linear-gradient(135deg, #ff5f6d, #ffc371);
         transform: rotate(45deg);
-        animation: floatUp 6s linear infinite;
+        animation: floatUp var(--duration, 7s) ease-in-out infinite;
         z-index: 1;
+        opacity: 0;
+        will-change: transform, opacity;
+        filter: drop-shadow(0 6px 12px rgba(255, 95, 109, 0.35));
       }
 
       .heart::before,
@@ -101,7 +139,7 @@
         position: absolute;
         width: 20px;
         height: 20px;
-        background: red;
+        background: inherit;
         border-radius: 50%;
       }
 
@@ -115,16 +153,29 @@
         top: 0;
       }
 
+      .photo-cloud {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
       .photo {
         position: absolute;
-        width: 130px;
-        height: 130px;
+        width: var(--photo-size);
+        height: var(--photo-size);
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        animation: float 6s ease-in-out infinite;
+        animation: float 7s ease-in-out infinite;
         z-index: 0;
-        display: none;
+        display: block;
+        opacity: 0;
+        transform: scale(0.9) translateY(25px);
+        filter: blur(6px);
+        transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+        pointer-events: none;
+        will-change: transform, opacity, filter;
       }
 
       .photo img {
@@ -133,8 +184,10 @@
         object-fit: cover;
       }
 
-      .gift-container.open ~ .photo {
-        display: block;
+      .photo.visible {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
       }
 
       .photo1 {
@@ -223,102 +276,212 @@
         left: 10%;
         animation-delay: 2.4s;
       }
+
+      @media (max-width: 900px) {
+        :root {
+          --gift-size: 130px;
+          --gift-radius: 14px;
+          --gift-gap: 20px;
+          --photo-size: 110px;
+        }
+
+        body {
+          padding: 32px 18px;
+        }
+
+        .message {
+          font-size: clamp(1.05rem, 3vw, 1.4rem);
+        }
+      }
+
+      @media (max-width: 600px) {
+        :root {
+          --gift-size: 110px;
+          --gift-radius: 12px;
+          --gift-gap: 18px;
+          --photo-size: 90px;
+        }
+
+        body {
+          padding: 28px 14px 80px;
+          height: auto;
+          overflow-y: auto;
+        }
+
+        .photo-cloud {
+          position: static;
+          width: 100%;
+          max-width: 420px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 16px;
+          margin-top: 24px;
+        }
+
+        .photo {
+          position: relative;
+          animation: none;
+          filter: blur(4px);
+          transform: scale(0.9) translateY(12px);
+          top: auto;
+          right: auto;
+          bottom: auto;
+          left: auto;
+          display: block;
+        }
+
+        .photo.visible {
+          transform: scale(1) translateY(0);
+          filter: blur(0);
+        }
+
+        .message {
+          max-width: 95vw;
+          font-size: clamp(1rem, 4.5vw, 1.3rem);
+        }
+      }
+
+      @media (max-width: 480px) {
+        :root {
+          --gift-size: 96px;
+          --gift-radius: 10px;
+          --gift-gap: 16px;
+          --photo-size: 74px;
+        }
+
+        body {
+          padding: 32px 12px 96px;
+        }
+
+        .message {
+          font-size: clamp(0.95rem, 5.2vw, 1.15rem);
+        }
+
+        .photo:nth-of-type(n + 10) {
+          display: none;
+        }
+      }
       @keyframes floatUp {
         0% {
-          transform: translateY(0) rotate(45deg);
-          opacity: 1;
+          transform: translate3d(0, 0, 0) scale(0.8) rotate(45deg);
+          opacity: 0;
+        }
+        20% {
+          transform: translate3d(0, -10vh, 0) scale(0.95) rotate(45deg);
+          opacity: 0.85;
+        }
+        60% {
+          transform: translate3d(calc(var(--x-offset, 0px) * 0.6), -70vh, 0)
+            scale(1.15) rotate(45deg);
+          opacity: 0.9;
         }
         100% {
-          transform: translateY(-1000px) rotate(45deg);
+          transform: translate3d(var(--x-offset, 0px), -120vh, 0) scale(1.35)
+            rotate(45deg);
           opacity: 0;
         }
       }
 
-      @keyframes bounce {
+      @keyframes giftPulse {
         0%,
         100% {
-          transform: translateY(0);
+          transform: translateY(0) scale(1);
         }
-        50% {
-          transform: translateY(-10px);
+        40% {
+          transform: translateY(-10px) scale(1.05);
         }
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
+        60% {
+          transform: translateY(-4px) scale(1.02);
         }
       }
 
       @keyframes float {
         0%,
         100% {
-          transform: translateY(0);
+          transform: translate3d(0, 0, 0);
         }
         50% {
-          transform: translateY(-10px);
+          transform: translate3d(0, -12px, 0);
         }
       }
     </style>
   </head>
   <body>
     <!-- Hộp quà -->
-    <div class="gift-container" onclick="openGift(this)" id="giftContainer">
+    <div class="gift-container" onclick="openGift()" id="giftContainer">
       <div class="gift-box" id="giftBox">
         <div class="lid"></div>
       </div>
       <div class="message" id="message">
-        Chúc mừng sinh nhật bé Quỳnh thúi của anh 🎉<br />
-        Chúc em luôn xinh đẹp, vui vẻ, hạnh phúc và bên anh quài quài nheee 💖
+        Chúc mừng ngày Phụ nữ Việt Nam 20/10, nàng thơ xinh đẹp của anh!<br />
+        Mong em luôn rạng rỡ, mạnh mẽ và được yêu thương thật nhiều mỗi ngày.
       </div>
     </div>
 
-    <!-- Ảnh xung quanh (ẩn ban đầu) -->
-    <div class="photo photo1"><img src="img2.jpg" alt="ảnh em yêu" /></div>
-    <div class="photo photo2"><img src="img3.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo3"><img src="img2.jpg" alt="ảnh em yêu" /></div>
-    <div class="photo photo4"><img src="img3.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo5">
-      <img
-        src="z6738997170139_353108224ffbfc5b901a43e05049f112.jpg"
-        alt="ảnh 2 đứa"
-      />
+    <!-- Ảnh xung quanh -->
+    <div class="photo-cloud">
+      <div class="photo photo1"><img src="img2.jpg" alt="ảnh em yêu" /></div>
+      <div class="photo photo2"><img src="img3.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo3"><img src="img2.jpg" alt="ảnh em yêu" /></div>
+      <div class="photo photo4"><img src="img3.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo5">
+        <img
+          src="z6738997170139_353108224ffbfc5b901a43e05049f112.jpg"
+          alt="ảnh kỷ niệm"
+        />
+      </div>
+      <div class="photo photo6"><img src="img4.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo7"><img src="img17.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo8"><img src="img6.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo9"><img src="img19.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo10"><img src="img8.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo11"><img src="img9.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo12"><img src="img10.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo13"><img src="img11.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo14"><img src="img12.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo15"><img src="img13.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo16"><img src="img14.jpg" alt="ảnh đôi mình" /></div>
+      <div class="photo photo17"><img src="img16.jpg" alt="ảnh đôi mình" /></div>
     </div>
-    <div class="photo photo6"><img src="img4.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo7"><img src="img17.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo8"><img src="img6.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo9"><img src="img19.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo10"><img src="img8.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo11"><img src="img9.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo12"><img src="img10.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo13"><img src="img11.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo14"><img src="img12.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo15"><img src="img13.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo16"><img src="img14.jpg" alt="ảnh 2 đứa" /></div>
-    <div class="photo photo17"><img src="img16.jpg" alt="ảnh 2 đứa" /></div>
     <script>
-      function openGift(el) {
-        document.getElementById("giftBox").classList.add("open");
-        document.getElementById("message").classList.add("open");
-        document.getElementById("giftContainer").classList.add("open");
+      function openGift() {
+        const giftContainer = document.getElementById("giftContainer");
+        if (giftContainer.classList.contains("open")) {
+          return;
+        }
+
+        giftContainer.classList.add("open");
+
+        const photos = document.querySelectorAll(".photo");
+        photos.forEach((photo, index) => {
+          setTimeout(() => {
+            photo.classList.add("visible");
+          }, index * 120);
+        });
 
         if (!window.heartsStarted) {
           window.heartsStarted = true;
-          setInterval(createHeart, 300);
+          createHeart();
+          window.heartsTimer = setInterval(createHeart, 260);
         }
       }
 
       function createHeart() {
         const heart = document.createElement("div");
         heart.className = "heart";
+        const duration = 6 + Math.random() * 4;
+        const size = 14 + Math.random() * 18;
+        heart.style.width = size + "px";
+        heart.style.height = size + "px";
         heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = 2 + Math.random() * 3 + "s";
+        heart.style.setProperty("--duration", duration + "s");
+        heart.style.setProperty("--x-offset", (Math.random() * 2 - 1) * 22 + "vw");
+        heart.style.animationDelay = Math.random() * -4 + "s";
         document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 6000);
+        setTimeout(() => heart.remove(), duration * 1000 + 2000);
       }
     </script>
   </body>
 </html>
+
